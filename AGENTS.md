@@ -71,17 +71,6 @@ Run from `wp-content/plugins/core`:
 composer require lipemat/mu-plugins
 ```
 
-Then add it to `preferred-install` in the same `composer.json`, alongside the other lipemat packages, so it lands as a
-git checkout rather than a dist archive:
-
-```json
-"preferred-install": {
-    "lipemat/mu-plugins": "source"
-}
-```
-
-Re-run `composer update lipemat/mu-plugins` after editing that.
-
 Done when `wp-content/plugins/core/vendor/lipemat/mu-plugins/load.php` exists.
 
 ### 3. Delete the extracted files
