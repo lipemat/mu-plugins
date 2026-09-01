@@ -12,6 +12,6 @@ declare( strict_types=1 );
  *
  * Adjust the path if the core plugin lives somewhere else.
  *
- * @version 1.0.0
+ * @version 8.0.0
  */
 require WP_CONTENT_DIR . '/plugins/core/vendor/lipemat/mu-plugins/object-cache/base.php';
