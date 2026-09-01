@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<ruleset name="MU Plugins - Rules">
+	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset -->
+
+	<description>Ruleset for the lipemat/mu-plugins package</description>
+	<version>1.0.0</version>
+
+	<!-- Include when not specified -->
+	<file>./load.php</file>
+	<file>./object-cache</file>
+	<file>./plugins</file>
+	<file>./src</file>
+	<file>./stubs</file>
+
+	<!-- Show file path based on project root. -->
+	<arg name="basepath" value="." />
+
+	<!-- Cache between runs -->
+	<arg name="cache" value="./.phpcs.cache" />
+
+	<!-- @see https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#various-sniffs-set-the-minimum-supported-wp-version -->
+	<config name="minimum_wp_version" value="6.4" />
+
+	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
+	<config name="testVersion" value="8.4-" />
+
+	<rule ref="Lipe" />
+
+	<!--
+		WordPress dictates the shape of an object cache drop-in: it must declare the
+		`wp_cache_*` functions, a global `WP_Object_Cache` class, the `WP_CACHE_*`
+		constants, and assign `$wp_object_cache`. Renaming any of them stops the
+		drop-in from working, so the sniffs those requirements violate do not run
+		against the drop-in.
+
+		The drop-in also loads from `wp_start_object_cache()`, long before
+		`wp-admin/includes/file.php` and `WP_Filesystem` exist, and it uses
+		`var_export`, `serialize`, and backtraces as mechanism rather than as
+		leftover debugging.
+	-->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>object-cache/*</exclude-pattern>
+		<!-- Deliberately short public API. Themes call these by name. -->
+		<exclude-pattern>plugins/escape.php</exclude-pattern>
+		<exclude-pattern>plugins/memoize.php</exclude-pattern>
+		<exclude-pattern>plugins/template-crumbs.php</exclude-pattern>
+
+		<!-- Allow the "lipe" or "Lipe" prefix for hooks, namespaces and functions -->
+		<!-- https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#wordpressnamingconventionsprefixallglobals-prefix-everything-in-the-global-namespace -->
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="Lipe\Mu" />
+				<element value="lipe/mu" />
+				<element value="lipe_mu" />
+				<element value="LIPE_MU" />
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+		<exclude-pattern>object-cache/*</exclude-pattern>
+	</rule>
+
+	<!-- Each handler declares `WP_Object_Cache`; exactly one of them is ever loaded. -->
+	<rule ref="Generic.Classes.DuplicateClassName">
+		<exclude-pattern>object-cache/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>object-cache/*</exclude-pattern>
+		<exclude-pattern>src/Cache/Object_Cache_Base.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>object-cache/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.PHP.DevelopmentFunctions">
+		<exclude-pattern>object-cache/*</exclude-pattern>
+		<exclude-pattern>src/Cache/Object_Cache_Base.php</exclude-pattern>
+		<!-- `debug_backtrace` is how a crumb names the file which called it. -->
+		<exclude-pattern>plugins/template-crumbs.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
+		<exclude-pattern>src/Cache/Object_Cache_Base.php</exclude-pattern>
+	</rule>
+
+	<!-- Translations -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<!-- https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#wordpresswpi18n-setting-your-text-domain -->
+			<property name="text_domain" type="array">
+				<element value="lipe" />
+			</property>
+		</properties>
+	</rule>
+</ruleset>

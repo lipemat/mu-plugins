@@ -1,0 +1,9 @@
+.idea
+.phpcs.cache
+.phpunit.cache
+.phpunit.result.cache
+/dev/wp-unit/local-config.php
+/vendor
+composer.lock
+phpcs.xml
+phpstan.neon

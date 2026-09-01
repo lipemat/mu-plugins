@@ -1,0 +1,29 @@
+{
+  "name": "lipemat/mu-plugins",
+  "description": "Shared WordPress must-use plugins and a drop-in object cache",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Mat Lipe",
+      "email": "mat@onpointplugins.com",
+      "homepage": "https://onpointplugins.com"
+    }
+  ],
+  "require": {
+    "lipemat/wordpress-libs": ">=5.10.0 || dev-develop@dev",
+    "php": ">=8.4.0"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Lipe\\Mu\\": "src/"
+    }
+  },
+  "scripts": {
+    "git-hooks": "dev/bin/git-hooks.sh"
+  }
+}

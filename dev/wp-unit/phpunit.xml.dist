@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Version 1.0.0 -->
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
+	beStrictAboutOutputDuringTests="true"
+	bootstrap="bootstrap.php"
+	cacheDirectory=".phpunit.cache"
+	colors="true"
+	displayDetailsOnAllIssues="true"
+	failOnDeprecation="true"
+	failOnEmptyTestSuite="true"
+	failOnNotice="true"
+	failOnPhpunitDeprecation="true"
+	failOnRisky="true"
+	failOnWarning="true"
+	stopOnDefect="true"
+	stopOnNotice="true"
+	stopOnDeprecation="true"
+>
+	<php>
+		<env name="HTTP_HOST" value="mu-plugins.loc" />
+	</php>
+	<testsuites>
+		<testsuite name="MU Plugins">
+			<directory>./tests</directory>
+		</testsuite>
+	</testsuites>
+	<source>
+		<include>
+			<file>../../load.php</file>
+			<directory>../../object-cache</directory>
+			<directory>../../plugins</directory>
+			<directory>../../src</directory>
+		</include>
+	</source>
+</phpunit>

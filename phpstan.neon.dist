@@ -1,0 +1,21 @@
+# @version 1.0.0
+
+includes:
+    # Include the lipemat phpstan rules.
+    - %rootDir%/../../../rules.neon
+
+parameters:
+    level: 8
+    lipemat:
+        noExtends: true
+        allowedToBeExtended:
+            - Lipe\Mu\Cache\Object_Cache_Base
+    # `stubs` is excluded so the sample `LIPE_MU_*` constants are not treated
+    # as the real values. Every project defines its own.
+    paths:
+        - load.php
+        - object-cache
+        - plugins
+        - src
+    bootstrapFiles:
+        - ../../autoload.php
