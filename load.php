@@ -13,7 +13,7 @@ declare( strict_types=1 );
  * and defines the `LIPE_MU_*` configuration constants before requiring this file.
  *
  * @see stubs/mu-plugin-loader.php
- * @see docs/MIGRATION.md
+ * @see AGENTS.md
  */
 
 /**

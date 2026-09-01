@@ -25,7 +25,8 @@ run before the Composer autoloader exists.
 | `stubs/mu-plugin-loader.php` | `wp-content/mu-plugins/lipe-mu-plugins.php` |
 | `stubs/object-cache.php`     | `wp-content/object-cache.php`               |
 
-`docs/MIGRATION.md` walks through converting a project which already has these files loose in `mu-plugins`.
+The "Migrating an existing project" section of [AGENTS.md](AGENTS.md) walks through converting a project which
+already has these files loose in `mu-plugins`.
 
 ## Configuration
 

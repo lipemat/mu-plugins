@@ -6,7 +6,7 @@ declare( strict_types=1 );
  *
  * Must be added to the `phpcs.xml` and PHPStan of the consuming project.
  *
- * @see docs/MIGRATION.md
+ * @see AGENTS.md
  *
  * @version 1.7.0
  */
