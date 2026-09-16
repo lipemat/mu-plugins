@@ -6,16 +6,10 @@ declare( strict_types=1 );
  * Plugin URI: https://github.com/lipemat/mu-plugins
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
- * Version: 3.0.0
- *
- * @notice Crumbs expose absolute template paths, so they are limited to
- *         `WP_DEBUG` on a non-production environment.
+ * Version: 3.0.1
  *
  * @requires WP 5.2+
  */
-if ( ! \defined( 'WP_DEBUG' ) ) {
-	return;
-}
 
 /**
  * Exclude a template from crumbs.
@@ -41,7 +35,10 @@ function template_crumbs_exclude( string $template ): void {
  * @return bool
  */
 function _lipe_template_crumbs_enabled(): bool {
-	return WP_DEBUG && ! \defined( 'WP_UNIT_DIR' ) && 'production' !== wp_get_environment_type();
+	if ( ! \defined( 'WP_DEBUG' ) || \defined( 'WP_UNIT_DIR' ) ) {
+		return false;
+	}
+	return WP_DEBUG;
 }
 
 if ( _lipe_template_crumbs_enabled() ) {
