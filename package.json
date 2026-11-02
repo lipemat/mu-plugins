@@ -1,0 +1,23 @@
+{
+  "name": "@lipemat/mu-plugins",
+  "version": "1.0.2",
+  "description": "Shared WordPress must-use plugins and a drop-in object cache.",
+  "author": "Mat Lipe <mat@onpointplugins.com>",
+  "license": "MIT",
+  "scripts": {
+    "dist-sass": "sass ./css/ --style compressed",
+    "lint": "stylelint css/**/*.scss --custom-syntax postcss-scss --fix --cache",
+    "start-sass": "sass --watch ./css/ --style compressed"
+  },
+  "dependencies": {
+    "postcss": "8.5.31",
+    "postcss-scss": "4.0.9",
+    "sass": "1.106.1",
+    "supports-color": "9.4.0"
+  },
+  "devDependencies": {
+    "@lipemat/stylelint-config": "^2.3.0",
+    "stylelint": "14.16.1"
+  },
+  "packageManager": "yarn@4.18.1"
+}

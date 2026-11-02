@@ -5,4 +5,13 @@
 /phpcs.xml.dist   export-ignore
 /phpstan.neon.dist export-ignore
 
+# Sass sources and the Node tooling which compiles and lints them.
+*.scss            export-ignore
+.pnp.*            export-ignore
+.stylelintrc      export-ignore
+.yarn             export-ignore
+.yarnrc.yml       export-ignore
+package.json      export-ignore
+yarn.lock         export-ignore
+
 * text=auto eol=lf

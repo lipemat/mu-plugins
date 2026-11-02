@@ -27,6 +27,9 @@ Three tiers run before the Composer autoloader exists, which is why nothing here
   `opcache.php` each declare a global `WP_Object_Cache`.
 - `stubs/` — the two files a consuming project copies and owns.
 - `src/Cache/` — the `ObjectCache` interface and the `Object_Cache_Base` shared implementation.
+- `css/` — Sass sources beside their committed `.css` and `.css.map` output. No build step runs on install, so a
+  changed `.scss` means running `yarn dist-sass` and committing the result. The sources and the Node tooling are
+  `export-ignore`d, so only the compiled files reach `vendor/`.
 
 ## Rules
 
@@ -172,3 +175,5 @@ Done when all four hold.
 - `phpcs` and `phpstan` from the package root.
 - `phpunit` from `dev/wp-unit/`, once against Memcached and once with `OBJECT_CACHE_HANDLER` pointed at
   `object-cache/opcache.php`, since the two handlers share the suite.
+- `yarn lint` and `yarn dist-sass` from the package root when anything under `css/` changed, with the recompiled
+  output committed.

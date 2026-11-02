@@ -2,8 +2,14 @@
 .phpcs.cache
 .phpunit.cache
 .phpunit.result.cache
+.stylelintcache
 /dev/wp-unit/local-config.php
 /vendor
 composer.lock
+node_modules
 phpcs.xml
 phpstan.neon
+
+# Yarn Berry files
+build-state.yml
+install-state.gz
