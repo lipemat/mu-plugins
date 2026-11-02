@@ -35,9 +35,13 @@ if ( \defined( 'LIPE_MU_DIR' ) ) {
 }
 \define( 'LIPE_MU_DIR', __DIR__ );
 
-if ( ! \defined( 'LIPE_MU_VERSION' ) ) {
-	\define( 'LIPE_MU_VERSION', '1.0.0' );
-}
+/**
+ * This package's location relative to the content directory.
+ *
+ * @see AGENTS.md for why this is a path and not a URL.
+ */
+\define( 'LIPE_MU_PATH', \str_replace( wp_normalize_path( WP_CONTENT_DIR ), '', wp_normalize_path( __DIR__ ) ) );
+\define( 'LIPE_MU_VERSION', '1.0.0' );
 
 /**
  * Modules load inside a closure, so a module's top level variables stay
@@ -57,6 +61,7 @@ if ( ! \defined( 'LIPE_MU_VERSION' ) ) {
 		'display-actions'         => [],
 		'escape'                  => [ 'es', 'sn' ],
 		'force-plugin-activation' => [],
+		'login-page'              => [],
 		'memoize'                 => [ 'memoize', 'once' ],
 		'template-crumbs'         => [
 			'_lipe_template_crumbs_called_from',

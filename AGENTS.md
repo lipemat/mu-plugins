@@ -26,10 +26,15 @@ Three tiers run before the Composer autoloader exists, which is why nothing here
 - `object-cache/` — `base.php` declares the `wp_cache_*` functions and requires a handler; `memcached.php` and
   `opcache.php` each declare a global `WP_Object_Cache`.
 - `stubs/` — the two files a consuming project copies and owns.
+- `dev/stubs/stubs.php` — symbols phpstan cannot discover on its own, reached through `scanFiles` and never loaded at
+  runtime. `load.php` is analysed, but phpstan only picks up a `define()` whose value is a constant expression, so a
+  computed constant used from another file is declared here.
 - `src/Cache/` — the `ObjectCache` interface and the `Object_Cache_Base` shared implementation.
 - `css/` — Sass sources beside their committed `.css` and `.css.map` output. No build step runs on install, so a
   changed `.scss` means running `yarn dist-sass` and committing the result. The sources and the Node tooling are
-  `export-ignore`d, so only the compiled files reach `vendor/`.
+  `export-ignore`d, so only the compiled files reach `vendor/`. `css/login.css` is enqueued by the `login-page`
+  module as `content_url( LIPE_MU_PATH . '/css/login.css' )`. `LIPE_MU_PATH` holds a path, not a URL, because
+  `content_url` is filtered by plugins which load after `load.php`.
 
 ## Rules
 
@@ -41,6 +46,10 @@ this package installs onto sites it does not control.
 
 Per-project values reach the package through the `LIPE_MU_*` constants defined in the mu-plugin stub, read with
 `\defined()`. Keep new configuration on that path so the package stays project-agnostic.
+
+`load.php` also defines `LIPE_MU_DIR`, `LIPE_MU_PATH`, and `LIPE_MU_VERSION` under the same prefix. These describe
+the package rather than the project. `LIPE_MU_PATH` and `LIPE_MU_VERSION` are guarded, so a stub which defines one
+keeps its own value; `LIPE_MU_DIR` doubles as the second-load guard and skips the whole file instead.
 
 The opcache handler writes PHP into `WP_CACHE_DIR` and `include`s it back. Anything reaching that file is executed,
 so a value is written only when every object inside it appears in `get_set_state_map()`.

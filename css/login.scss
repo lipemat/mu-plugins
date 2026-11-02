@@ -30,15 +30,35 @@ body {
 	width: 350px;
 
 	h1 {
+		display: block;
 		margin-top: 50px;
 
 		a {
 			background: none;
 			color: var(--lipe-mu-login-text);
-			display: inline;
+			display: block;
 			font-size: 40px;
 			line-height: 1;
+			text-indent: 0;
 			text-shadow: 2px 2px #282828;
+			transition: color .3s ease;
+			width: 350px;
+
+			svg {
+				color: #05d4ff;
+				margin: 6px -4px -6px;
+				transition: color .3s ease;
+			}
+
+			@media (any-hover: hover) {
+				&:hover {
+					color: #05d4ff;
+
+					svg {
+						color: var(--lipe-mu-login-background);
+					}
+				}
+			}
 		}
 	}
 
@@ -69,9 +89,9 @@ body {
 			display: inline-block;
 			height: 30px;
 			left: 0;
-			margin: 5px 0 0 7px;
+			margin: .5em 0 0 .5em;
 			position: absolute;
-			top: 16px;
+			top: 100%;
 			width: 30px;
 			z-index: 2;
 		}
@@ -100,7 +120,8 @@ body {
 
 		&[type='password'],
 		&[type='text'] {
-			padding-left: 42px;
+			font-size: 20px;
+			padding: 2px 2px 4px 42px;
 			position: relative;
 			width: 100%;
 		}
@@ -126,8 +147,8 @@ body {
 			&,
 			&:focus {
 				-webkit-box-shadow: 0 0 0 1000px #333 inset;
-				-webkit-text-fill-color: #f8f4eb;
 				transition: background-color 5000s ease-in-out 0s;
+				-webkit-text-fill-color: #f8f4eb;
 			}
 		}
 	}
@@ -165,9 +186,9 @@ body {
 	background: var(--lipe-mu-login-card);
 	box-shadow: 1px 4px 6px #0009;
 	color: var(--lipe-mu-login-text);
-	mix-blend-mode: hard-light;
 	padding: 0;
 	transition: box-shadow .35s ease;
+	mix-blend-mode: hard-light;
 
 	a {
 		box-shadow: none;

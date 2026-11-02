@@ -47,8 +47,8 @@ const LIPE_MU_FORCE_DEACTIVATE = [];
  * Modules to skip, by file name without the extension.
  *
  * @var array<int, string> - cache-groups, display-actions, escape,
- *                         force-plugin-activation, memoize, template-crumbs,
- *                         use-the-force.
+ *                         force-plugin-activation, login-page, memoize,
+ *                         template-crumbs, use-the-force.
  */
 const LIPE_MU_DISABLED_MODULES = [];
 

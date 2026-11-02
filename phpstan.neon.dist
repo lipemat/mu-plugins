@@ -19,3 +19,5 @@ parameters:
         - src
     bootstrapFiles:
         - ../../autoload.php
+    scanFiles:
+        - dev/stubs/stubs.php

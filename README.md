@@ -20,8 +20,8 @@ composer require lipemat/mu-plugins
 Then copy the two stubs into the project. They stay with the project because WordPress requires both locations, and both
 run before the Composer autoloader exists.
 
-| Stub                        | Copy to                                    |
-|-----------------------------|--------------------------------------------|
+| Stub                         | Copy to                                     |
+|------------------------------|---------------------------------------------|
 | `stubs/mu-plugin-loader.php` | `wp-content/mu-plugins/lipe-mu-plugins.php` |
 | `stubs/object-cache.php`     | `wp-content/object-cache.php`               |
 
@@ -44,15 +44,16 @@ Runtime overrides remain available through the `lipe/mu/force-plugin-activation/
 
 ## Modules
 
-| Module                     | Provides                                                                                     |
-|----------------------------|----------------------------------------------------------------------------------------------|
-| `cache-groups`             | Persistent caching for the `counts` group and for theme lookups.                              |
-| `display-actions`          | Prints every firing hook name. Requires `DEBUG_DISPLAY_ACTIONS` and a `local` environment.    |
-| `escape`                   | The `es()` and `sn()` output helpers.                                                         |
-| `force-plugin-activation`  | Keeps required plugins active and blocked plugins inactive.                                   |
-| `memoize`                  | The `memoize()` and `once()` template tags.                                                   |
-| `template-crumbs`          | HTML comments naming the template which produced the markup, plus `lipe_template_part()`.     |
-| `use-the-force`            | Runs actions, filters, container calls, and closures declared in `$GLOBALS['use_the_force']`. |
+| Module                    | Provides                                                                                      |
+|---------------------------|-----------------------------------------------------------------------------------------------|
+| `cache-groups`            | Persistent caching for the `counts` group and for theme lookups.                              |
+| `display-actions`         | Prints every firing hook name. Requires `DEBUG_DISPLAY_ACTIONS` and a `local` environment.    |
+| `escape`                  | The `es()` and `sn()` output helpers.                                                         |
+| `force-plugin-activation` | Keeps required plugins active and blocked plugins inactive.                                   |
+| `login-page`              | Brands the login screen: the stylesheet, the OnPoint header link, and the inlined logo.       |
+| `memoize`                 | The `memoize()` and `once()` template tags.                                                   |
+| `template-crumbs`         | HTML comments naming the template which produced the markup, plus `lipe_template_part()`.     |
+| `use-the-force`           | Runs actions, filters, container calls, and closures declared in `$GLOBALS['use_the_force']`. |
 
 Each module claims global function names. When a name is already taken the package leaves the existing declaration
 alone and reports it through `_doing_it_wrong()` under `WP_DEBUG`. Add the module to `LIPE_MU_DISABLED_MODULES` to
