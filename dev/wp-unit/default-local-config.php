@@ -27,5 +27,7 @@ define( 'WP_TESTS_DOMAIN', 'mu-plugins.loc' );
 define( 'WP_TESTS_EMAIL', 'unit-tests@test.com' );
 define( 'WP_TESTS_TITLE', 'MU Plugins Tests' );
 define( 'WP_UNIT_DIR', 'E:/SVN/wp-unit' );
+define( 'WP_CONTENT_DIR', \dirname( __DIR__, 7 ) );
+define( 'WP_CONTENT_URL', 'http://' . DOMAIN_CURRENT_SITE . '/' . \basename( WP_CONTENT_DIR ) );
 
 define( 'ABSPATH', WP_SITE_ROOT . 'wp/' );
