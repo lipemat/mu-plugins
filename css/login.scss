@@ -126,6 +126,10 @@ body {
 			width: 100%;
 		}
 
+		&[type='password'] {
+			padding-right: 2.5rem;
+		}
+
 		&[type='checkbox']:checked::before {
 			background-color: currentcolor;
 			color: inherit;
