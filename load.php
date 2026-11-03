@@ -6,7 +6,7 @@ declare( strict_types=1 );
  * Description: Shared must-use plugins loaded from a stub in the `mu-plugins` directory.
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
- * Version: 1.0.0
+ * Version: 1.1.1
  * License: MIT
  *
  * Required by a project owned stub, which lives in `wp-content/mu-plugins`
@@ -16,23 +16,10 @@ declare( strict_types=1 );
  * @see AGENTS.md
  */
 
-/**
- * Skip loading during installation to prevent issues with
- * database tables not yet existing.
- */
-if ( wp_installing() ) {
+if ( wp_installing() || \defined( 'LIPE_MU_DIR' ) ) {
 	return;
 }
-
-/**
- * Guard against a second load.
- *
- * `require_once` compares resolved paths, which is not enough when the same
- * file is reached through two different spellings of the same directory.
- */
-if ( \defined( 'LIPE_MU_DIR' ) ) {
-	return;
-}
+\define( 'LIPE_MU_VERSION', '1.1.1' );
 \define( 'LIPE_MU_DIR', __DIR__ );
 
 /**
@@ -41,7 +28,6 @@ if ( \defined( 'LIPE_MU_DIR' ) ) {
  * @see AGENTS.md for why this is a path and not a URL.
  */
 \define( 'LIPE_MU_PATH', \str_replace( wp_normalize_path( WP_CONTENT_DIR ), '', wp_normalize_path( __DIR__ ) ) );
-\define( 'LIPE_MU_VERSION', '1.0.0' );
 
 /**
  * Modules load inside a closure, so a module's top level variables stay
