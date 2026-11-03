@@ -9,9 +9,13 @@ namespace Lipe\Mu;
  */
 final class Login_Page_Test extends \WP_UnitTestCase {
 	private const string CDN_URL = 'https://cdn.test/content';
+	private const string CORE_LABEL = 'Remember Me';
+	private const string CORE_SUBMIT = 'Log In';
 	private const string CORE_TEXT = 'Powered by WordPress';
 	private const string CORE_URL = 'https://wordpress.org/';
 	private const string ONPOINT_URL = 'https://onpointplugins.com/';
+	private const string OTHER_TEXT_DOMAIN = 'lipe';
+	private const string SWAPPED_LABEL = 'Keep me logged in for two weeks';
 
 
 	/**
@@ -93,6 +97,69 @@ final class Login_Page_Test extends \WP_UnitTestCase {
 	}
 
 
+	public function test_remember_me_label_swapped(): void {
+		do_action( 'login_form' );
+
+		$actual = self::translate_label();
+
+		$this->assertSame( self::SWAPPED_LABEL, $actual, 'The checkbox names the duration it buys' );
+	}
+
+
+	public function test_label_untouched_before_login_form(): void {
+		$actual = self::translate_label();
+
+		$this->assertSame( self::CORE_LABEL, $actual, 'A request which never renders the form pays nothing' );
+	}
+
+
+	public function test_other_default_domain_string_untouched(): void {
+		do_action( 'login_form' );
+
+		$actual = translate( self::CORE_SUBMIT );
+
+		$this->assertSame( self::CORE_SUBMIT, $actual, 'Only the one string in the `default` domain is swapped' );
+	}
+
+
+	public function test_remember_me_in_other_domain_untouched(): void {
+		do_action( 'login_form' );
+
+		$actual = translate( self::CORE_LABEL, self::OTHER_TEXT_DOMAIN );
+
+		$this->assertSame( self::CORE_LABEL, $actual, 'Another plugin\'s identical string keeps its own translation' );
+	}
+
+
+	public function test_gettext_kept_until_it_matches(): void {
+		do_action( 'login_form' );
+		translate( self::CORE_LABEL, self::OTHER_TEXT_DOMAIN );
+
+		$actual = self::translate_label();
+
+		$this->assertSame( self::SWAPPED_LABEL, $actual, 'A near miss does not spend the one swap' );
+	}
+
+
+	public function test_gettext_unhooked_once_it_matches(): void {
+		do_action( 'login_form' );
+
+		self::translate_label();
+
+		$this->assertFalse( has_filter( 'gettext' ), 'The rest of the request pays nothing for the swap' );
+	}
+
+
+	public function test_remember_me_label_swapped_once(): void {
+		do_action( 'login_form' );
+		self::translate_label();
+
+		$actual = self::translate_label();
+
+		$this->assertSame( self::CORE_LABEL, $actual, 'A later use of the same string is core\'s own again' );
+	}
+
+
 	/**
 	 * Mirror the `<h1>` core renders in `login_header()`, which echoes the
 	 * filtered text unescaped inside its own anchor.
@@ -115,6 +182,17 @@ final class Login_Page_Test extends \WP_UnitTestCase {
 
 	private static function header_url(): string {
 		return (string) apply_filters( 'login_headerurl', self::CORE_URL );
+	}
+
+
+	/**
+	 * Core reaches the label through `esc_html_e( 'Remember Me' )`, which
+	 * translates against the `default` domain.
+	 *
+	 * @see wp-login.php
+	 */
+	private static function translate_label(): string {
+		return translate( self::CORE_LABEL );
 	}
 
 

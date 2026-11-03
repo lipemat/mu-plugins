@@ -31,3 +31,24 @@ add_filter( 'login_headertext', function(): string {
 
 	return 'Handcrafted by <br />' . $logo . ' OnPoint';
 } );
+
+/**
+ * Rename the Remember Me checkbox to the two weeks it actually buys.
+ *
+ * Core offers no filter for the label, so `gettext` stands in from
+ * `login_form`, which fires immediately before the checkbox.
+ *
+ * @see wp-login.php
+ */
+add_action( 'login_form', function(): void {
+	$swap = function( string $translation, string $text, string $domain ) use ( &$swap ): string {
+		if ( 'Remember Me' !== $text || 'default' !== $domain ) {
+			return $translation;
+		}
+		remove_filter( 'gettext', $swap );
+
+		return 'Keep me logged in for two weeks';
+	};
+
+	add_filter( 'gettext', $swap, 10, 3 );
+} );
