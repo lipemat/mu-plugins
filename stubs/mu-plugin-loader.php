@@ -6,15 +6,13 @@ declare( strict_types=1 );
  * Description: Project configuration for the `lipemat/mu-plugins` package.
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
- * Version: 1.0.0
+ * Version: 1.0.1
  *
  * Copy to `wp-content/mu-plugins/lipe-mu-plugins.php`.
  *
  * WordPress only auto-loads PHP files sitting directly in `mu-plugins`. This
  * stub is the project's own file: it holds the per-project configuration,
  * requires the core plugin's Composer autoloader, then the package.
- *
- * @version 1.0.1
  */
 
 /**
