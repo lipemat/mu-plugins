@@ -9,7 +9,7 @@ namespace Lipe\MU;
  * Description: Shared must-use plugins loaded from a stub in the `mu-plugins` directory.
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
- * Version: 1.1.1
+ * Version: 1.1.2
  * License: MIT
  *
  * Required by a project owned stub, which lives in `wp-content/mu-plugins`
