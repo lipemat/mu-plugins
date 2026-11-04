@@ -10,12 +10,11 @@ declare( strict_types=1 );
  *
  * Copy to `wp-content/mu-plugins/lipe-mu-plugins.php`.
  *
- * WordPress only auto-loads PHP files sitting directly in `mu-plugins`, and
- * must-use plugins run before the Composer autoloader exists. This stub is the
- * project's own file: it holds the per-project configuration and requires the
- * package.
+ * WordPress only auto-loads PHP files sitting directly in `mu-plugins`. This
+ * stub is the project's own file: it holds the per-project configuration,
+ * requires the core plugin's Composer autoloader, then the package.
  *
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
@@ -52,4 +51,5 @@ const LIPE_MU_FORCE_DEACTIVATE = [];
  */
 const LIPE_MU_DISABLED_MODULES = [];
 
+require_once WP_CONTENT_DIR . '/plugins/core/vendor/autoload.php';
 require WP_CONTENT_DIR . '/plugins/core/vendor/lipemat/mu-plugins/load.php';

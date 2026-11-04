@@ -17,8 +17,9 @@ Shared WordPress must-use plugins and a drop-in object cache, kept in one place 
 composer require lipemat/mu-plugins
 ```
 
-Then copy the two stubs into the project. They stay with the project because WordPress requires both locations, and both
-run before the Composer autoloader exists.
+Then copy the two stubs into the project. They stay with the project because WordPress requires both locations. The
+object cache stub runs before the Composer autoloader exists; the mu-plugin stub requires the core plugin's autoloader,
+then `load.php`.
 
 | Stub                         | Copy to                                     |
 |------------------------------|---------------------------------------------|
