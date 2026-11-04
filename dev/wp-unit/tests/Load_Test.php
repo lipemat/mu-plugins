@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * @author Mat Lipe
  * @since  November 2026
  */
-#[CoversFunction( 'lipe_mu_modules_to_load' )]
+#[CoversFunction( '\Lipe\MU\get_modules_to_load' )]
 final class Load_Test extends \WP_UnitTestCase {
 	/**
 	 * @param array<int|string, mixed> $disabled
@@ -18,9 +18,9 @@ final class Load_Test extends \WP_UnitTestCase {
 	 */
 	#[DataProvider( 'providerModulesToLoad' )]
 	public function test_modules_to_load( bool $installing, array $disabled, array $expected, string $message ): void {
-		$actual = lipe_mu_modules_to_load( $installing, $disabled );
+		$actual = get_modules_to_load( $installing, $disabled );
 
-		$this->assertSame( $expected, $actual, $message );
+		$this->assertSame( $expected, \array_keys( $actual ), $message );
 	}
 
 
@@ -34,7 +34,7 @@ final class Load_Test extends \WP_UnitTestCase {
 	 */
 	public static function providerModulesToLoad(): array {
 		return [
-			'Not installing'                => [
+			'Not installing'                 => [
 				'installing' => false,
 				'disabled'   => [],
 				'expected'   => [
@@ -49,7 +49,7 @@ final class Load_Test extends \WP_UnitTestCase {
 				],
 				'message'    => 'Every module loads outside of an install.',
 			],
-			'Not installing, disabled'      => [
+			'Not installing, disabled'       => [
 				'installing' => false,
 				'disabled'   => [ 'cache-groups', 'escape' ],
 				'expected'   => [
@@ -62,19 +62,19 @@ final class Load_Test extends \WP_UnitTestCase {
 				],
 				'message'    => 'Disabled modules are skipped.',
 			],
-			'Installing'                    => [
+			'Installing'                     => [
 				'installing' => true,
 				'disabled'   => [],
 				'expected'   => [ 'escape', 'memoize', 'template-crumbs' ],
 				'message'    => 'Only the API modules a theme calls load during an install.',
 			],
-			'Installing, disabled'          => [
+			'Installing, disabled'           => [
 				'installing' => true,
 				'disabled'   => [ 'memoize', 'use-the-force' ],
 				'expected'   => [ 'escape', 'template-crumbs' ],
 				'message'    => 'Disabled modules are skipped during an install.',
 			],
-			'Installing, all API disabled'  => [
+			'Installing, all API disabled'   => [
 				'installing' => true,
 				'disabled'   => [ 'escape', 'memoize', 'template-crumbs' ],
 				'expected'   => [],

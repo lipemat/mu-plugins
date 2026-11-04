@@ -1,10 +1,11 @@
 <?php
 declare( strict_types=1 );
+
 /**
  * Plugin Name: Login Page
  * Plugin URI: https://github.com/lipemat/mu-plugins
  * Description: Brand the WordPress login screen with the OnPoint identity.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
  *
@@ -13,8 +14,11 @@ declare( strict_types=1 );
  * @see stubs/mu-plugin-loader.php
  */
 
+use Lipe\Lib\Theme\Resources;
+
 add_action( 'login_enqueue_scripts', function(): void {
-	wp_enqueue_style( 'lipe/mu/login-page', content_url( LIPE_MU_PATH . '/css/login.css' ), [ 'login' ], LIPE_MU_VERSION );
+	$url = content_url( LIPE_MU_PATH . '/css/login.css' );
+	wp_enqueue_style( 'lipe/mu/login-page', $url, [ 'login' ], Resources::in()->get_content_hash( $url ) );
 } );
 
 add_filter( 'login_headerurl', function(): string {

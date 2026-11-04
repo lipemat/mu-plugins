@@ -1,5 +1,8 @@
 <?php
 declare( strict_types=1 );
+
+namespace Lipe\MU;
+
 /**
  * Plugin Name: Lipe MU Plugins
  * Plugin URI: https://github.com/lipemat/mu-plugins
@@ -16,11 +19,9 @@ declare( strict_types=1 );
  * @see AGENTS.md
  */
 
-if ( \defined( 'LIPE_MU_DIR' ) ) {
+if ( \defined( 'LIPE_MU_PATH' ) || ! \defined( 'ABSPATH' ) ) {
 	return;
 }
-\define( 'LIPE_MU_VERSION', '1.1.1' );
-\define( 'LIPE_MU_DIR', __DIR__ );
 
 /**
  * This package's location relative to the content directory.
@@ -40,28 +41,49 @@ if ( \defined( 'LIPE_MU_DIR' ) ) {
 		$disabled = [];
 	}
 
-	$modules = lipe_mu_modules();
-	foreach ( lipe_mu_modules_to_load( wp_installing(), $disabled ) as $module ) {
-		$taken = \array_filter( $modules[ $module ]['declares'], '\function_exists' );
+	/**
+	 * Report a global function name this package was unable to claim.
+	 *
+	 * The existing declaration is left alone so the site keeps running, but any
+	 * caller expecting this package's version receives the other one instead.
+	 *
+	 * Notices are deferred until `plugins_loaded` because mu-plugins run before
+	 * it is safe to emit output.
+	 *
+	 * @param string $name   - Name of the conflicting function.
+	 * @param string $module - Module which declares it, for disabling.
+	 */
+	$report_conflict = function( string $name, string $module ): void {
+		add_action( 'plugins_loaded', function() use ( $name, $module ): void {
+			_doing_it_wrong(
+				esc_html( $name . '()' ),
+				esc_html( \sprintf( 'Already declared elsewhere, so the `lipemat/mu-plugins` version was skipped. Add `%s` to `LIPE_MU_DISABLED_MODULES` to silence this.', $module ) ),
+				'1.1.0'
+			);
+		} );
+	};
+
+	foreach ( get_modules_to_load( wp_installing(), $disabled ) as $name => $module ) {
+		$taken = \array_filter( $module['declares'], \function_exists( ... ) );
 		if ( [] !== $taken ) {
-			lipe_mu_conflicting_function( \reset( $taken ), $module );
+			$report_conflict( \reset( $taken ), $name );
 			continue;
 		}
 
-		require_once __DIR__ . "/plugins/{$module}.php";
+		require_once __DIR__ . "/plugins/{$name}.php";
 	}
 } )();
 
 /**
- * Every module, keyed by file name without the `.php` extension.
+ * Modules to load, in load order.
  *
- * - `declares`: global function names the module declares.
- * - `installing`: load while WordPress is installing. Default `false`.
+ * @param bool                     $installing - Whether WordPress is installing.
+ * @param array<int|string, mixed> $disabled   - `LIPE_MU_DISABLED_MODULES`.
  *
- * @return array<string, array{declares: list<string>, installing?: bool}>
+ * @return array<string, array{declares: list<string>, installing?: true}>
  */
-function lipe_mu_modules(): array {
-	return [
+function get_modules_to_load( bool $installing, array $disabled ): array {
+	$modules = [
 		'cache-groups'            => [
 			'declares' => [],
 		],
@@ -98,49 +120,14 @@ function lipe_mu_modules(): array {
 			'declares' => [],
 		],
 	];
-}
 
-
-/**
- * Modules to load, in load order.
- *
- * @param bool                     $installing - Whether WordPress is installing.
- * @param array<int|string, mixed> $disabled   - `LIPE_MU_DISABLED_MODULES`.
- *
- * @return list<string>
- */
-function lipe_mu_modules_to_load( bool $installing, array $disabled ): array {
-	$to_load = [];
-	foreach ( lipe_mu_modules() as $module => $config ) {
-		if ( \in_array( $module, $disabled, true ) ) {
-			continue;
+	return \array_filter( $modules, function( array $module, string $name ) use ( $installing, $disabled ): bool {
+		if ( \in_array( $name, $disabled, true ) ) {
+			return false;
 		}
-		if ( false === $installing || ( isset( $config['installing'] ) && true === $config['installing'] ) ) {
-			$to_load[] = $module;
+		if ( ! $installing ) {
+			return true;
 		}
-	}
-	return $to_load;
-}
-
-
-/**
- * Report a global function name this package was unable to claim.
- *
- * The existing declaration is left alone so the site keeps running, but any
- * caller expecting this package's version receives the other one instead.
- *
- * Notices are deferred until `plugins_loaded` because mu-plugins run before
- * it is safe to emit output.
- *
- * @param string $name   - Name of the conflicting function.
- * @param string $module - Module which declares it, for disabling.
- */
-function lipe_mu_conflicting_function( string $name, string $module ): void {
-	add_action( 'plugins_loaded', function() use ( $name, $module ): void {
-		_doing_it_wrong(
-			esc_html( $name . '()' ),
-			esc_html( \sprintf( 'Already declared elsewhere, so the `lipemat/mu-plugins` version was skipped. Add `%s` to `LIPE_MU_DISABLED_MODULES` to silence this.', $module ) ),
-			esc_html( LIPE_MU_VERSION )
-		);
-	} );
+		return isset( $module['installing'] );
+	}, ARRAY_FILTER_USE_BOTH );
 }

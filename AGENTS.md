@@ -24,7 +24,7 @@ would run it outside WordPress, from this package's own phpunit and phpstan boot
 ## Layout
 
 - `plugins/` — one procedural module per file, loaded by `load.php` in a closure so module variables stay out of the
-  global scope. Add a module by creating the file and adding it to the map in `lipe_mu_modules()`, keyed by file
+  global scope. Add a module by creating the file and adding it to the map in `get_modules_to_load()`, keyed by file
   name:
   - `declares` — the global function names it declares.
   - `installing` — optional, default `false`. `true` loads the module during `wp_installing()`, for API modules a
@@ -53,9 +53,8 @@ this package installs onto sites it does not control.
 Per-project values reach the package through the `LIPE_MU_*` constants defined in the mu-plugin stub, read with
 `\defined()`. Keep new configuration on that path so the package stays project-agnostic.
 
-`load.php` also defines `LIPE_MU_DIR`, `LIPE_MU_PATH`, and `LIPE_MU_VERSION` under the same prefix. These describe
-the package rather than the project. `LIPE_MU_PATH` and `LIPE_MU_VERSION` are guarded, so a stub which defines one
-keeps its own value; `LIPE_MU_DIR` doubles as the second-load guard and skips the whole file instead.
+`load.php` keeps its own helpers in the `Lipe\MU` namespace. Its one global is `LIPE_MU_PATH`, which describes the
+package rather than the project and doubles as the second-load guard, so a stub leaves it to `load.php`.
 
 The opcache handler writes PHP into `WP_CACHE_DIR` and `include`s it back. Anything reaching that file is executed,
 so a value is written only when every object inside it appears in `get_set_state_map()`.
