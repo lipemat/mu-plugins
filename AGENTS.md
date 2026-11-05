@@ -28,7 +28,8 @@ would run it outside WordPress, from this package's own phpunit and phpstan boot
   name:
   - `declares` — the global function names it declares.
   - `installing` — optional, default `false`. `true` loads the module during `wp_installing()`, for API modules a
-    theme calls (`escape`, `memoize`, `template-crumbs`). `LIPE_MU_DISABLED_MODULES` still applies.
+    theme calls (`escape`, `memoize`, `template-crumbs`) and for hooks which must also apply during an install
+    (`disable-core-features`). `LIPE_MU_DISABLED_MODULES` still applies.
 - `object-cache/` — `base.php` declares the `wp_cache_*` functions and requires a handler; `memcached.php` and
   `opcache.php` each declare a global `WP_Object_Cache`.
 - `stubs/` — the two files a consuming project copies and owns.

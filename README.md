@@ -48,6 +48,7 @@ Runtime overrides remain available through the `lipe/mu/force-plugin-activation/
 | Module                    | Provides                                                                                      |
 |---------------------------|-----------------------------------------------------------------------------------------------|
 | `cache-groups`            | Persistent caching for the `counts` group and for theme lookups.                              |
+| `disable-core-features`   | Turns off WordPress core features which add overhead, such as the random content redirect.    |
 | `display-actions`         | Prints every firing hook name. Requires `DEBUG_DISPLAY_ACTIONS` and a `local` environment.    |
 | `escape`                  | The `es()` and `sn()` output helpers.                                                         |
 | `force-plugin-activation` | Keeps required plugins active and blocked plugins inactive.                                   |

@@ -6,7 +6,7 @@ declare( strict_types=1 );
  * Description: Project configuration for the `lipemat/mu-plugins` package.
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
- * Version: 1.0.1
+ * Version: 1.0.2
  *
  * Copy to `wp-content/mu-plugins/lipe-mu-plugins.php`.
  *
@@ -43,9 +43,9 @@ const LIPE_MU_FORCE_DEACTIVATE = [];
 /**
  * Modules to skip, by file name without the extension.
  *
- * @var array<int, string> - cache-groups, display-actions, escape,
- *                         force-plugin-activation, login-page, memoize,
- *                         template-crumbs, use-the-force.
+ * @var array<int, string> - cache-groups, disable-core-features,
+ *                         display-actions, escape, force-plugin-activation,
+ *                         login-page, memoize, template-crumbs, use-the-force.
  */
 const LIPE_MU_DISABLED_MODULES = [];
 

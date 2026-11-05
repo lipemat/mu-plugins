@@ -39,6 +39,7 @@ final class Load_Test extends \WP_UnitTestCase {
 				'disabled'   => [],
 				'expected'   => [
 					'cache-groups',
+					'disable-core-features',
 					'display-actions',
 					'escape',
 					'force-plugin-activation',
@@ -53,6 +54,7 @@ final class Load_Test extends \WP_UnitTestCase {
 				'installing' => false,
 				'disabled'   => [ 'cache-groups', 'escape' ],
 				'expected'   => [
+					'disable-core-features',
 					'display-actions',
 					'force-plugin-activation',
 					'login-page',
@@ -65,18 +67,18 @@ final class Load_Test extends \WP_UnitTestCase {
 			'Installing'                     => [
 				'installing' => true,
 				'disabled'   => [],
-				'expected'   => [ 'escape', 'memoize', 'template-crumbs' ],
-				'message'    => 'Only the API modules a theme calls load during an install.',
+				'expected'   => [ 'disable-core-features', 'escape', 'memoize', 'template-crumbs' ],
+				'message'    => 'Only the modules which apply during an install load.',
 			],
 			'Installing, disabled'           => [
 				'installing' => true,
 				'disabled'   => [ 'memoize', 'use-the-force' ],
-				'expected'   => [ 'escape', 'template-crumbs' ],
+				'expected'   => [ 'disable-core-features', 'escape', 'template-crumbs' ],
 				'message'    => 'Disabled modules are skipped during an install.',
 			],
-			'Installing, all API disabled'   => [
+			'Installing, all disabled'       => [
 				'installing' => true,
-				'disabled'   => [ 'escape', 'memoize', 'template-crumbs' ],
+				'disabled'   => [ 'disable-core-features', 'escape', 'memoize', 'template-crumbs' ],
 				'expected'   => [],
 				'message'    => 'Nothing loads when every install module is disabled.',
 			],
@@ -85,6 +87,7 @@ final class Load_Test extends \WP_UnitTestCase {
 				'disabled'   => [ 'unknown', 'escape.php', 'Memoize', 0, null, true ],
 				'expected'   => [
 					'cache-groups',
+					'disable-core-features',
 					'display-actions',
 					'escape',
 					'force-plugin-activation',

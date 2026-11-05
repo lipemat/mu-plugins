@@ -87,6 +87,10 @@ function get_modules_to_load( bool $installing, array $disabled ): array {
 		'cache-groups'            => [
 			'declares' => [],
 		],
+		'disable-core-features'   => [
+			'declares'   => [],
+			'installing' => true,
+		],
 		'display-actions'         => [
 			'declares' => [],
 		],
