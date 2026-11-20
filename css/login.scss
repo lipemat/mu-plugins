@@ -199,6 +199,7 @@ body {
 		color: var(--lipe-mu-login-text);
 		display: inline-block;
 		padding: 5px 5px 5px 24px;
+		text-decoration: none;
 		width: 100%;
 
 		/* Core colors `#nav a:focus` at this same specificity. */
@@ -229,9 +230,4 @@ body {
 	overflow: hidden;
 	text-align: left;
 	width: auto;
-
-	a {
-		color: var(--lipe-mu-login-text);
-		text-decoration: none;
-	}
 }
