@@ -3,12 +3,16 @@ declare( strict_types=1 );
 
 namespace Lipe\Mu;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * @author Mat Lipe
  * @since  November 2026
  */
 final class Login_Page_Test extends \WP_UnitTestCase {
 	private const string CDN_URL = 'https://cdn.test/content';
+	// Copied from wp-login.php, which exposes no constant for it.
+	private const string CORE_HELP_TEXT = 'Selecting "Remember Me" increases the length of time until you&#8217;re asked to log in again on this device. To keep your account secure, use this option only on your personal devices.';
 	private const string CORE_LABEL = 'Remember Me';
 	private const string CORE_SUBMIT = 'Log In';
 	private const string CORE_TEXT = 'Powered by WordPress';
@@ -21,7 +25,7 @@ final class Login_Page_Test extends \WP_UnitTestCase {
 	/**
 	 * `wp_enqueue_style()` leaves an already registered handle alone.
 	 */
-	public function setUp(): void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		wp_deregister_style( 'lipe/mu/login-page' );
@@ -160,6 +164,23 @@ final class Login_Page_Test extends \WP_UnitTestCase {
 	}
 
 
+	public function test_help_text_names_swapped_label(): void {
+		$expected = 'Selecting "Keep me logged in" increases the length of time until you&#8217;re asked to log in again on this device. To keep your account secure, use this option only on your personal devices.';
+
+		$actual = self::help_text( self::CORE_HELP_TEXT );
+
+		$this->assertSame( $expected, $actual, 'The tooltip drops core\'s "Remember Me" for the renamed checkbox' );
+	}
+
+
+	#[DataProvider( 'providerUntouchedHelpText' )]
+	public function test_help_text_untouched_without_core_label( string $text, string $message ): void {
+		$actual = self::help_text( $text );
+
+		$this->assertSame( $text, $actual, $message );
+	}
+
+
 	/**
 	 * Mirror the `<h1>` core renders in `login_header()`, which echoes the
 	 * filtered text unescaped inside its own anchor.
@@ -200,5 +221,37 @@ final class Login_Page_Test extends \WP_UnitTestCase {
 		$style = wp_styles()->registered['lipe/mu/login-page'] ?? null;
 
 		return $style instanceof \_WP_Dependency ? (string) $style->src : '';
+	}
+
+
+	/**
+	 * Core passes its translated help text through this filter, and an empty
+	 * result drops the toggletip.
+	 *
+	 * @see wp-login.php
+	 */
+	private static function help_text( string $text ): string {
+		return (string) apply_filters( 'login_remember_me_help_text', $text );
+	}
+
+
+	/**
+	 * @return array<string, array{text: string, message: string}>
+	 */
+	public static function providerUntouchedHelpText(): array {
+		return [
+			'removed'    => [
+				'text'    => '',
+				'message' => 'A tooltip another plugin removed stays removed',
+			],
+			'translated' => [
+				'text'    => 'Wenn Sie „Angemeldet bleiben“ auswählen, verlängert sich die Zeit bis zur nächsten Anmeldung.',
+				'message' => 'A locale which never says "Remember Me" keeps its own wording',
+			],
+			'lowercase'  => [
+				'text'    => 'Only remember me on devices you own.',
+				'message' => 'Only the label\'s exact casing is swapped, not the phrase in prose',
+			],
+		];
 	}
 }

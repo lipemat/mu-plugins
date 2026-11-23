@@ -151,14 +151,30 @@ body {
 			&,
 			&:focus {
 				-webkit-box-shadow: 0 0 0 1000px #333 inset;
-				transition: background-color 5000s ease-in-out 0s;
 				-webkit-text-fill-color: #f8f4eb;
+				transition: background-color 5000s ease-in-out 0s;
 			}
 		}
 	}
 
 	.wp-hide-pw {
 		color: #ddd;
+	}
+
+	/* The toggle, not the bubble's close button. */
+	.wp-is-toggletip > button {
+		color: #ddd;
+
+		&:focus {
+			box-shadow: 0 0 0 1px #3ff;
+			color: var(--lipe-mu-login-text);
+		}
+
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--lipe-mu-login-text);
+			}
+		}
 	}
 
 	.button-primary {
@@ -190,9 +206,9 @@ body {
 	background: var(--lipe-mu-login-card);
 	box-shadow: 1px 4px 6px #0009;
 	color: var(--lipe-mu-login-text);
+	mix-blend-mode: hard-light;
 	padding: 0;
 	transition: box-shadow .35s ease;
-	mix-blend-mode: hard-light;
 
 	a {
 		box-shadow: none;
@@ -222,6 +238,29 @@ body {
 				color: #ddd;
 			}
 		}
+	}
+}
+
+/* Core's transparent secondary buttons vanish on the gradient. */
+.login .button:not(.button-primary, .wp-hide-pw) {
+	background: #232526;
+	border-color: #2e71aa;
+	color: #95eaff;
+
+	@media (any-hover: hover) {
+		&:hover {
+			border-color: #1496ef;
+		}
+	}
+
+	&:active,
+	&:focus {
+		border-color: #1496ef;
+		color: #95eaff;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 1px #3582c4;
 	}
 }
 

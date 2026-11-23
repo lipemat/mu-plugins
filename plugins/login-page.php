@@ -36,6 +36,8 @@ add_filter( 'login_headertext', function(): string {
 	return 'Handcrafted by <br />' . $logo . ' OnPoint';
 } );
 
+$core_label = 'Remember Me';
+
 /**
  * Rename the Remember Me checkbox to the two weeks it actually buys.
  *
@@ -44,9 +46,9 @@ add_filter( 'login_headertext', function(): string {
  *
  * @see wp-login.php
  */
-add_action( 'login_form', function(): void {
-	$swap = function( string $translation, string $text, string $domain ) use ( &$swap ): string {
-		if ( 'Remember Me' !== $text || 'default' !== $domain ) {
+add_action( 'login_form', function() use ( $core_label ): void {
+	$swap = function( string $translation, string $text, string $domain ) use ( &$swap, $core_label ): string {
+		if ( $core_label !== $text || 'default' !== $domain ) {
 			return $translation;
 		}
 		remove_filter( 'gettext', $swap );
@@ -55,4 +57,11 @@ add_action( 'login_form', function(): void {
 	};
 
 	add_filter( 'gettext', $swap, 10, 3 );
+} );
+
+/**
+ * Core's Remember Me toggletip names the checkbox by its original label.
+ */
+add_filter( 'login_remember_me_help_text', function( string $text ) use ( $core_label ): string {
+	return \str_replace( $core_label, 'Keep me logged in', $text );
 } );
