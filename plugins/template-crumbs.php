@@ -6,7 +6,7 @@ declare( strict_types=1 );
  * Plugin URI: https://github.com/lipemat/mu-plugins
  * Author: Mat Lipe
  * Author URI: https://onpointplugins.com
- * Version: 3.0.1
+ * Version: 3.1.0
  *
  * @requires WP 5.2+
  */
@@ -35,10 +35,8 @@ function template_crumbs_exclude( string $template ): void {
  * @return bool
  */
 function _lipe_template_crumbs_enabled(): bool {
-	if ( ! \defined( 'WP_DEBUG' ) || \defined( 'WP_UNIT_DIR' ) ) {
-		return false;
-	}
-	return WP_DEBUG;
+	$enabled = \defined( 'WP_DEBUG' ) && ! \defined( 'WP_UNIT_DIR' ) && true === WP_DEBUG;
+	return true === apply_filters( 'lipe/mu/template-crumbs/enabled', $enabled );
 }
 
 if ( _lipe_template_crumbs_enabled() ) {
